@@ -31,7 +31,7 @@ public class LoginController {
 		Selectors.wireComponents(view, this, false);
 		session = Sessions.getCurrent();
 		
-		
+		System.out.println("SESSION -- >>> >> > " + session);
 	}
 	
 	@Command

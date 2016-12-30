@@ -25,10 +25,11 @@ public class HomeController {
 			throws Exception {
 
 		Selectors.wireComponents(view, this, false);
-
+		
 		session = Sessions.getCurrent();
 		userId = (String) session.getAttribute("userId");
 		userId = "Welcome " + userId;
+		
 
 	}
 

@@ -3,18 +3,6 @@
 <borderlayout apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.appsquad.paybooks.controller.HomeController')">
 	<north size="7%">
 		<div>
-				<!-- <grid >
-					<columns>
-						<column width="40%" align="left"></column>
-						<column width="60%" align="right"></column>
-					</columns>
-					<rows>
-						<row>
-							<image src="images/logoDisplay.png" height="9%" visible="false"/>
-							
-						</row>
-					</rows>
-				</grid> -->
 				<menubar id="menubar">
 				
 					<menuitem width="80%" label="@bind(vm.userId)" style="font-weight:bold;font-size:20px;color:#00AAAA;"/>
@@ -68,6 +56,29 @@
 						
 									</treechildren>
 								</treeitem>
+								
+								<!-- payslip -->
+									
+								<treeitem open="false">
+									<treerow>
+									  <treecell label="Payslip Section"></treecell>
+									</treerow>
+									<treechildren>
+									
+										<treeitem open="false">
+											<treerow>
+												<treecell label="Generate Payslip" onClick='inclResults.setSrc("/WEB-INF/view/generatepayslip.zul")'></treecell>
+											</treerow>
+										</treeitem>
+									
+									
+									
+									
+									</treechildren>
+								
+								
+								</treeitem>
+								
 						  </treechildren>	
 					
 					  </treeitem>	

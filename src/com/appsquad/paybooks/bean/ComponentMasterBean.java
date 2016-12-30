@@ -8,6 +8,7 @@ public class ComponentMasterBean {
 	private String isActive;
 	private boolean checked;
 	private Double amount;
+	private Integer eOrdId;
 	
 	
 	public Integer getComponentId() {
@@ -45,6 +46,12 @@ public class ComponentMasterBean {
 	}
 	public void setAmount(Double amount) {
 		this.amount = amount;
+	}
+	public Integer geteOrdId() {
+		return eOrdId;
+	}
+	public void seteOrdId(Integer eOrdId) {
+		this.eOrdId = eOrdId;
 	}
 	
 	

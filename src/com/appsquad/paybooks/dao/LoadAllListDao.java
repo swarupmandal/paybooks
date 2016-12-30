@@ -9,6 +9,7 @@ import java.util.Arrays;
 import org.zkoss.zul.Messagebox;
 
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
+import com.appsquad.paybooks.bean.MonthMasterBean;
 import com.appsquad.paybooks.database.DatabaseHandler;
 import com.appsquad.paybooks.database.Pbpstm;
 import com.appsquad.paybooks.sql.LoadAllListSql;
@@ -110,6 +111,44 @@ public class LoadAllListDao {
 	
 	}
 	
+	public ArrayList<MonthMasterBean> loadmonths(){
+		
+		ArrayList<MonthMasterBean> list =new ArrayList<MonthMasterBean>();
+		if(list.size()>0){
+			list.clear();
+		}
+		try {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			try {
+				connection = DatabaseHandler.createConnection();
+				preparedStatement = Pbpstm.createQuery(connection, LoadAllListSql.loadMonths, null);
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					MonthMasterBean bean = new MonthMasterBean();
+					bean.setMonthId(resultSet.getInt("month_master_id"));
+					bean.setMonth(resultSet.getString("month_name"));
+					
+					list.add(bean);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Messagebox.show(e.getMessage(), "Error", Messagebox.OK, Messagebox.ERROR);
+				
+			}finally{
+				if(preparedStatement != null){
+					preparedStatement.close();
+				}
+				if(connection != null){
+					connection.close();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	
+	}
 	
 }
