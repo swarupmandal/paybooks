@@ -42,7 +42,7 @@ public class GeneratePayslipDao {
 					//bean.setDojStr(resultSet.getString("date_of_joining"));
 					bean.setDojStr("31/8/15");
 					bean.setAccNo(resultSet.getString("account_no"));
-					bean.setComponentList(GeneratePayslipDao.loadComponents(connection, bean.getEmployeeId()));
+					bean.setComponentList(GeneratePayslipDao.loadComponents(connection, bean.getEmployeeId(), bean));
 					
 					list.add(bean);
 					
@@ -67,12 +67,12 @@ public class GeneratePayslipDao {
 		
 	}
 	
-	public static ArrayList<ComponentMasterBean> loadComponents(Connection connection, int empId){
+	public static ArrayList<ComponentMasterBean> loadComponents(Connection connection, int empId, GeneratePayslipBean payslipBean){
 		ArrayList<ComponentMasterBean> list = new ArrayList<ComponentMasterBean>();
 		if(list.size()>0){
 			list.clear();
 		}
-		
+		double totalEarnings = 0.0;
 		
 		PreparedStatement preparedStatement = null;
 		try {
@@ -85,8 +85,13 @@ public class GeneratePayslipDao {
 				bean.setAmount(resultSet.getDouble("amount"));
 				bean.seteOrdId(resultSet.getInt("e_or_d_id"));
 				
+				if(bean.geteOrdId() ==1){
+					totalEarnings = totalEarnings + bean.getAmount();
+				}
+				
 				list.add(bean);
 			}
+			payslipBean.setTotalEarningAmnt(totalEarnings);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

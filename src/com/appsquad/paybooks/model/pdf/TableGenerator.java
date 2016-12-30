@@ -344,7 +344,7 @@ public class TableGenerator {
 		return table;
 	} 
 	
-	////////////////total amount and total deduction
+	//total amount and total deduction
 	public static PdfPTable totalAmnt(GeneratePayslipBean bean){
 		
 		float[] width = {4,4,4,4};
@@ -375,15 +375,11 @@ public class TableGenerator {
 	///////////last table(summary)
 	public static PdfPTable lastTable(GeneratePayslipBean bean){
 		float[] width = {5,1,12};
+		
 		PdfPTable table = new PdfPTable(width);
 		
-		
 		table.addCell(summaryCellCompo());
-		
-		
 		table.addCell(summuryDotCell());
-		
-		
 		table.addCell(summaryCellCompo(bean));
 		
 		return table;
@@ -453,7 +449,17 @@ public class TableGenerator {
 		
 	}
 	
+	//last table
 	
+	public static PdfPTable digitalStatment(){
+		PdfPTable table = new PdfPTable(1);
+		
+		Phrase phrase = new Phrase("\"This payslip is computer generated, hence no signature is required\" ");
+		cell = new PdfPCell(phrase);
+		table.addCell(cell);
+		
+		return table;
+	}
 	
 	
 	

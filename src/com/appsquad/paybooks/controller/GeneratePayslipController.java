@@ -1,6 +1,8 @@
 package com.appsquad.paybooks.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
@@ -87,20 +89,20 @@ public class GeneratePayslipController {
 				
 				e.printStackTrace();
 			}
-			
-			
-			
-			
-			
 		}else {
 			Messagebox.show("Please check at least one","Alert Information",Messagebox.OK,Messagebox.EXCLAMATION);
 		}
-		
-		
-		
-		
 	}
 	
+	
+	/*Calendar now = Calendar.getInstance();
+	int year = now.get(Calendar.YEAR);
+	String yearInString = String.valueOf(year);
+	
+	 Calendar cal = Calendar.getInstance();
+	 System.out.println(new SimpleDateFormat("MMM").format(cal.getTime()));
+	
+	*/
 	
 	
 	public MonthMasterBean getMonthMasterBean() {
