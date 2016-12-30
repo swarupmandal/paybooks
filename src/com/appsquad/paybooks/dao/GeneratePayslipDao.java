@@ -41,6 +41,7 @@ public class GeneratePayslipDao {
 					bean.setEmailId(resultSet.getString("email_id"));
 					//bean.setDojStr(resultSet.getString("date_of_joining"));
 					bean.setDojStr("31/8/15");
+					bean.setAccNo(resultSet.getString("account_no"));
 					bean.setComponentList(GeneratePayslipDao.loadComponents(connection, bean.getEmployeeId()));
 					
 					list.add(bean);

@@ -9,13 +9,16 @@ import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zul.Messagebox;
 
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.appsquad.paybooks.bean.MonthMasterBean;
 import com.appsquad.paybooks.dao.LoadAllListDao;
+import com.appsquad.paybooks.model.pdf.PayslipGenerator;
 import com.appsquad.paybooks.model.service.GeneratePayslipService;
 public class GeneratePayslipController {
 
@@ -75,14 +78,22 @@ public class GeneratePayslipController {
 			payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
 			payslipHeaderBean.setYear("2016");
 			
+			String path = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
+			PayslipGenerator payslipGenerator = new PayslipGenerator();
+			try {
+				payslipGenerator.getSlipDetails(path, checkedList, payslipHeaderBean);
 			
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
 			
 			
 			
 			
 			
 		}else {
-			
+			Messagebox.show("Please check at least one","Alert Information",Messagebox.OK,Messagebox.EXCLAMATION);
 		}
 		
 		

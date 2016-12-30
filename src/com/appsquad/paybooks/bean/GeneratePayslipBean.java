@@ -12,12 +12,14 @@ public class GeneratePayslipBean {
 	private String employeeName;
 	private String designation;
 	private String emailId;
+	private String accNo;
 	
 	private Date dojutil;
 	private java.sql.Date dojSql;
 	private String dojStr;
 	
 	private Integer presentDays;
+	private Double lopDays;
 	
 	private Integer monthId;
 	private String month;
@@ -26,6 +28,10 @@ public class GeneratePayslipBean {
 	private String companyName;
 	private String companyAddress;
 	
+	private Double totalEarningAmnt;
+	private Double totalDeductionAmnt;
+	
+	private String transferMode = "Bank Transfer";
 	
 	
 	private ArrayList<ComponentMasterBean> componentList = new ArrayList<ComponentMasterBean>();
@@ -132,6 +138,36 @@ public class GeneratePayslipBean {
 	}
 	public void setYear(String year) {
 		this.year = year;
+	}
+	public String getAccNo() {
+		return accNo;
+	}
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+	public Double getLopDays() {
+		return lopDays;
+	}
+	public void setLopDays(Double lopDays) {
+		this.lopDays = lopDays;
+	}
+	public Double getTotalEarningAmnt() {
+		return totalEarningAmnt;
+	}
+	public void setTotalEarningAmnt(Double totalEarningAmnt) {
+		this.totalEarningAmnt = totalEarningAmnt;
+	}
+	public Double getTotalDeductionAmnt() {
+		return totalDeductionAmnt;
+	}
+	public void setTotalDeductionAmnt(Double totalDeductionAmnt) {
+		this.totalDeductionAmnt = totalDeductionAmnt;
+	}
+	public String getTransferMode() {
+		return transferMode;
+	}
+	public void setTransferMode(String transferMode) {
+		this.transferMode = transferMode;
 	}
 	
 	

@@ -42,8 +42,9 @@
 			</rows>
 		</grid>	
 		</div>
+		<space></space>
 		<div align="center">
-		<button label="Generate Payslip" onClick="@command('onCLickGeneratePayslip')"></button>
+		<button label="Generate Payslip" onClick="@command('onCLickGeneratePayslip')" style="font-weight : bold"></button>
 		
 		
 		</div>

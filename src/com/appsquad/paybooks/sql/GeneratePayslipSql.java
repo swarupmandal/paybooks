@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class GeneratePayslipSql {
 
-	public static final String loadEmployee = "select eei.employee_info_id,eei.employee_code, eei.employee_name, eei.designation, eei.email_id, eei.date_of_joining from em_employee_info eei where eei.is_delete = 'N' ";
+	public static final String loadEmployee = "select eei.employee_info_id,eei.employee_code, eei.employee_name, eei.designation, eei.email_id, eei.date_of_joining, eei.account_no "
+											  + " from em_employee_info eei where eei.is_delete = 'N' ";
 	
 	public static final String loadEmployeeSalaryComponents = "SELECT component_allocation_id, " +
 															   " employee_info_id, " +
