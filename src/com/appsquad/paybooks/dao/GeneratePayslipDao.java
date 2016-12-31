@@ -73,7 +73,7 @@ public class GeneratePayslipDao {
 			list.clear();
 		}
 		double totalEarnings = 0.0;
-		
+		double totaldeductions = 0.0;
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = Pbpstm.createQuery(connection, GeneratePayslipSql.loadEmployeeSalaryComponents, Arrays.asList(empId));
@@ -88,10 +88,15 @@ public class GeneratePayslipDao {
 				if(bean.geteOrdId() ==1){
 					totalEarnings = totalEarnings + bean.getAmount();
 				}
+				if(bean.geteOrdId() == 2){
+					totaldeductions = totaldeductions+ bean.getAmount();
+				}
+				
 				
 				list.add(bean);
 			}
 			payslipBean.setTotalEarningAmnt(totalEarnings);
+			payslipBean.setTotalDeductionAmnt(totaldeductions);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

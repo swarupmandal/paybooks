@@ -5,8 +5,10 @@ import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.appsquad.paybooks.model.utils.NumberToWord;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.sun.javafx.fxml.BeanAdapter;
 
 
 public class TableGenerator {
@@ -19,10 +21,12 @@ public class TableGenerator {
 		PdfPTable table = new PdfPTable(widths);
 		
 			cell = new PdfPCell();
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			
 			table.addCell(createRHSinnerHeaderTable(headerBean));
-		
+			
+			
 		return table;
 	}
 	
@@ -32,15 +36,21 @@ public class TableGenerator {
 		
 		Phrase companyName = new Phrase(headerBean.getCompanyName());
 		cell = new PdfPCell(companyName);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase companyAddress = new Phrase(headerBean.getCompanyAddress());
 		cell = new PdfPCell(companyAddress);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase others = new Phrase("Payslip for " + headerBean.getMonth() +"-"+headerBean.getYear());
 		cell = new PdfPCell(others);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
+		
+		table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+		
 		
 		return table;
 	}
@@ -81,26 +91,32 @@ public class TableGenerator {
 		
 		Phrase EmployeeName = new Phrase("Employee Name ");
 		cell = new PdfPCell(EmployeeName);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase EmployeeID = new Phrase("Employee ID ");
 		cell = new PdfPCell(EmployeeID);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase Designation = new Phrase("Designation ");
 		cell = new PdfPCell(Designation);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase Department = new Phrase("Department ");
 		cell = new PdfPCell(Department);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase doj = new Phrase("Date of Joining ");
 		cell = new PdfPCell(doj);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase ESINumber = new Phrase("ESI Number ");
 		cell = new PdfPCell(ESINumber);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -110,28 +126,34 @@ public class TableGenerator {
 		
 		PdfPTable table = new PdfPTable(1);
 		
-		Phrase EmployeeName = new Phrase("Somnath Dutta");
+		Phrase EmployeeName = new Phrase(empdetBean.getEmployeeName());
 		cell = new PdfPCell(EmployeeName);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase EmployeeID = new Phrase("00008");
+		Phrase EmployeeID = new Phrase(empdetBean.getEmployeeCode());
 		cell = new PdfPCell(EmployeeID);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase Designation = new Phrase("Programmer Analyst");
+		Phrase Designation = new Phrase(empdetBean.getDesignation());
 		cell = new PdfPCell(Designation);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase Department = new Phrase(" ");
 		cell = new PdfPCell(Department);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase doj = new Phrase("31/08/2015");
+		Phrase doj = new Phrase(empdetBean.getDojStr());
 		cell = new PdfPCell(doj);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase ESINumber = new Phrase(" ");
 		cell = new PdfPCell(ESINumber);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -143,26 +165,32 @@ public class TableGenerator {
 		
 		Phrase PFNo = new Phrase("PF No ");
 		cell = new PdfPCell(PFNo);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase uan = new Phrase("UAN ");
 		cell = new PdfPCell(uan);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase workLocation = new Phrase("Work Location ");
 		cell = new PdfPCell(workLocation);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase lopDays = new Phrase("LOP Days");
 		cell = new PdfPCell(lopDays);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase workedDays = new Phrase("Worked Days ");
 		cell = new PdfPCell(workedDays);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase bankacno = new Phrase("Bank A/c No ");
 		cell = new PdfPCell(bankacno);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -174,26 +202,32 @@ public class TableGenerator {
 		
 		Phrase PFNo = new Phrase(" ");
 		cell = new PdfPCell(PFNo);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		 
 		Phrase uan = new Phrase(" ");
 		cell = new PdfPCell(uan);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase workLocation = new Phrase("Kolkata");
 		cell = new PdfPCell(workLocation);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase lopDays = new Phrase("0.00");
 		cell = new PdfPCell(lopDays);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase workedDays = new Phrase("20.0");
+		Phrase workedDays = new Phrase(""+empdetBean.getPresentDays());
 		cell = new PdfPCell(workedDays);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase bankacno = new Phrase("30724970417");
+		Phrase bankacno = new Phrase(empdetBean.getAccNo());
 		cell = new PdfPCell(bankacno);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -205,26 +239,32 @@ public class TableGenerator {
 		
 		Phrase dot1 = new Phrase(":");
 		cell = new PdfPCell(dot1);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		 
 		Phrase dot2 = new Phrase(":");
 		cell = new PdfPCell(dot2);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot3 = new Phrase(":");
 		cell = new PdfPCell(dot3);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot4 = new Phrase(":");
 		cell = new PdfPCell(dot4);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot5 = new Phrase(":");
 		cell = new PdfPCell(dot5);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot6 = new Phrase(":");
 		cell = new PdfPCell(dot6);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -235,11 +275,20 @@ public class TableGenerator {
 		PdfPTable table = new PdfPTable(1);
 		Phrase gap = new Phrase(" ");
 		cell = new PdfPCell(gap);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
 	}
 	
+	public static PdfPTable gapTableWidthBorder(){
+		PdfPTable table = new PdfPTable(1);
+		Phrase gap = new Phrase(" ");
+		cell = new PdfPCell(gap);
+		table.addCell(cell);
+		
+		return table;
+	}
 	//////////////////Earning and Deduction
 	public static PdfPTable earningDeductionLabel(){
 		
@@ -248,20 +297,24 @@ public class TableGenerator {
 		
 		Phrase earnings = new Phrase("Earnings");
 		cell = new PdfPCell(earnings);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase earnAmnt = new Phrase("Amount (Rs)");
 		cell = new PdfPCell(earnAmnt);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase deductions = new Phrase("Deductions");
 		cell = new PdfPCell(deductions);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase deductAmnt = new Phrase("Amount (Rs)");
 		cell = new PdfPCell(deductAmnt);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		
@@ -297,6 +350,7 @@ public class TableGenerator {
 				
 			Phrase deductAmnt = new Phrase(bean.getComponent());
 			cell = new PdfPCell(deductAmnt);
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			}
 		}
@@ -311,6 +365,7 @@ public class TableGenerator {
 			Phrase deductAmnt = new Phrase(""+bean.getAmount());
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			}
 		}
@@ -324,6 +379,7 @@ public class TableGenerator {
 			if(bean.geteOrdId() == 2){
 			Phrase deductAmnt = new Phrase(bean.getComponent());
 			cell = new PdfPCell(deductAmnt);
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			}
 		}
@@ -338,6 +394,7 @@ public class TableGenerator {
 			Phrase deductAmnt = new Phrase(""+bean.getAmount());
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			}
 		}
@@ -352,20 +409,24 @@ public class TableGenerator {
 		
 		Phrase earnings = new Phrase(" ");
 		cell = new PdfPCell(earnings);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase earnAmnt = new Phrase(""+bean.getTotalEarningAmnt());
 		cell = new PdfPCell(earnAmnt);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase deductions = new Phrase(" ");
 		cell = new PdfPCell(deductions);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase deductAmnt = new Phrase(""+bean.getTotalDeductionAmnt());
 		cell = new PdfPCell(deductAmnt);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -391,14 +452,17 @@ public class TableGenerator {
 		
 		Phrase netpay = new Phrase("Net Pay");
 		cell = new PdfPCell(netpay);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase amntinwords = new Phrase("Amount in Words");
 		cell = new PdfPCell(amntinwords);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase ModeofPayment = new Phrase("Mode of Payment");
 		cell = new PdfPCell(ModeofPayment);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -411,14 +475,17 @@ public class TableGenerator {
 		
 		Phrase netpaydot = new Phrase(":");
 		cell = new PdfPCell(netpaydot);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase amntinwordsdot = new Phrase(":");
 		cell = new PdfPCell(amntinwordsdot);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase ModeofPaymentdot = new Phrase(":");
 		cell = new PdfPCell(ModeofPaymentdot);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -428,21 +495,24 @@ public class TableGenerator {
 	public static PdfPTable summaryCellCompo(GeneratePayslipBean bean){
 		PdfPTable table = new PdfPTable(1);
 		
-		//double netpayment = bean.getTotalEarningAmnt()-bean.getTotalDeductionAmnt();
-		double netpayment = 20140.00;
+		double netpayment = bean.getTotalEarningAmnt()-bean.getTotalDeductionAmnt();
+		
 		String amountString = NumberToWord.numToStr(netpayment);
 		
 		
 		Phrase netpay = new Phrase(""+netpayment);
 		cell = new PdfPCell(netpay);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase amntinwords = new Phrase(amountString);
 		cell = new PdfPCell(amntinwords);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase ModeofPayment = new Phrase(bean.getTransferMode());
 		cell = new PdfPCell(ModeofPayment);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
@@ -456,6 +526,7 @@ public class TableGenerator {
 		
 		Phrase phrase = new Phrase("\"This payslip is computer generated, hence no signature is required\" ");
 		cell = new PdfPCell(phrase);
+		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;

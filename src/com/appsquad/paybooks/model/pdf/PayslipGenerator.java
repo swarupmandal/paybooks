@@ -22,26 +22,27 @@ public class PayslipGenerator {
 		System.out.println("My file path :: "+filePath);
 		
 		for(GeneratePayslipBean bean : employeePayBeanList){
-			
-			document = new Document(PageSize.A4, 2, 5, 30, 50);
+			System.out.println(bean.getPresentDays());
+			document = new Document(PageSize.A4, 1, 1, 30, 50);
 			writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
-			writer.setBoxSize("art", new Rectangle(36, 54, 900, 850));
+			writer.setBoxSize("art", new Rectangle(40, 58, 900, 850));
 			
 			document.open();
 			document.add(TableGenerator.createHeaderTable(headerBean));  // header table
 			document.add(TableGenerator.gapTable());                     // gap between header and middle table
-			document.add(TableGenerator.generateMiddleTable(headerBean));// middle table (employee details)  bean will be changed
+			document.add(TableGenerator.generateMiddleTable(bean));		 // middle table (employee details)  bean will be changed
 			document.add(TableGenerator.gapTable());                     // gap between middle and salary table
 			document.add(TableGenerator.earningDeductionLabel());        // earning and deduction label
 			document.add(TableGenerator.generateSalaryTable(bean));		 // salary table bean will be from list
 			document.add(TableGenerator.totalAmnt(bean));          		 // total amount earning and deduction
-			document.add(TableGenerator.lastTable(headerBean));			 // last table(summary)
+			document.add(TableGenerator.lastTable(bean));			 	 // last table(summary)
 			document.add(TableGenerator.gapTable());                     // gap between middle and salary table
 			document.add(TableGenerator.digitalStatment());				 // digital signature
 			
 			document.close();
+			//DownloadPdf.download(filePath, headerBean.getEmployeeName());
 		}
-		//DownloadPdf.download(path, "payslip");
+		
 	}
 	
 }

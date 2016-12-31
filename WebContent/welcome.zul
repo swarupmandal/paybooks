@@ -14,7 +14,7 @@
 	   	  <div style="border : 1px solid" width="255px" height="500px">
 	   	  	<vbox>
 		   	  	<textbox placeholder="User Id" value="@bind(vm.loginBean.userId)"></textbox>
-		   	  	<textbox placeholder="Password" value="@bind(vm.loginBean.password)"></textbox>
+		   	  	<textbox placeholder="Password" value="@bind(vm.loginBean.password)" type="password"></textbox>
 		   	  	<button label="Login" onClick="@command('onCLickLogin')"></button>
 		   	  	
 	   	  	</vbox>
