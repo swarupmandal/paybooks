@@ -1,36 +1,35 @@
 package com.appsquad.paybooks.model.pdf;
 
+
 import com.appsquad.paybooks.bean.ComponentMasterBean;
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.appsquad.paybooks.model.utils.NumberToWord;
-import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.sun.javafx.fxml.BeanAdapter;
 
-
-public class TableGenerator {
+public class TestTableGenerator {
 	static PdfPCell cell;
 	
 	public static PdfPTable createHeaderTable(GeneratePayslipBean headerBean){
 		
-			float[] widths = {5,15};
-		
-			PdfPTable table = new PdfPTable(widths);
-			table.setWidthPercentage(95);
-			
-			PdfPCell cellL = new PdfPCell();
-			cellL.setBorder(Rectangle.NO_BORDER);
-			
-			
-			PdfPCell cellR = new PdfPCell(createRHSinnerHeaderTable(headerBean));
-			cellR.setBorder(Rectangle.NO_BORDER);
-			
-			table.addCell(cellL);
-			table.addCell(cellR);
+		float[] widths = {5,15};
+
+		PdfPTable table = new PdfPTable(widths);
+		table.setWidthPercentage(95);
+
+		PdfPCell cellL = new PdfPCell();
+		cellL.setBorder(Rectangle.NO_BORDER);
+
+
+		PdfPCell cellR = new PdfPCell(createRHSinnerHeaderTable(headerBean));
+		cellR.setBorder(Rectangle.NO_BORDER);
+
+		table.addCell(cellL);
+		table.addCell(cellR);
 			
 		return table;
 	}
@@ -60,14 +59,35 @@ public class TableGenerator {
 	
 	
 	///////////
-	public static PdfPTable generateMiddleTable(GeneratePayslipBean bean){
+	public static PdfPTable generateMiddleTable(GeneratePayslipBean bean) throws DocumentException{
 		
-		float[] width = {5,1,5,5,1,5};
-		PdfPTable table = new PdfPTable(width);
+		float[] width = {2f,2f};
+		PdfPTable table = new PdfPTable(2);
+		table.setWidths(width);
 		table.setWidthPercentage(95);
 		
+		PdfPCell cellL = new PdfPCell(generateMiddleTableL(bean));
+		
+		PdfPCell cellR = new PdfPCell(generateMiddleTableR(bean));
+		
+		table.addCell(cellL);
+		table.addCell(cellR);
+		
+		
+		return table;
+		
+	}
+	
+	public static PdfPTable generateMiddleTableL(GeneratePayslipBean bean) throws DocumentException{
+		
+		float[] colWidths = {1.5f,0.3f,2f};
+		
+		PdfPTable table = new PdfPTable(3);
+		table.setWidthPercentage(100);
+		table.setWidths(colWidths);
+		
 		PdfPCell cell1 = new PdfPCell(generateMiddleTableLeft());
-		cell1.setBorderColor(BaseColor.BLACK);
+		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		PdfPCell cell2 = new PdfPCell(createDottTable());
 		cell2.setBorder(Rectangle.NO_BORDER);
@@ -75,32 +95,14 @@ public class TableGenerator {
 		PdfPCell cell3 = new PdfPCell(generateMiddleTableLeft(bean));
 		cell3.setBorder(Rectangle.NO_BORDER);
 		
-		PdfPCell cell4 = new PdfPCell(generateMiddleTableRight());
-		cell4.setBorderColor(BaseColor.BLACK);
-		
-		PdfPCell cell5 = new PdfPCell(createDottTable());
-		cell5.setBorder(Rectangle.NO_BORDER);
-		
-		PdfPCell cell6 = new PdfPCell(generateMiddleTableRight(bean));
-		cell6.setBorder(Rectangle.NO_BORDER);
-		
 		table.addCell(cell1);
 		table.addCell(cell2);
 		table.addCell(cell3);
-		table.addCell(cell4);
-		table.addCell(cell5);
-		table.addCell(cell6);
-		
-		/*table.addCell(generateMiddleTableLeft());
-		table.addCell(createDottTable());
-		table.addCell(generateMiddleTableLeft(bean));
-		table.addCell(generateMiddleTableRight());
-		table.addCell(createDottTable());
-		table.addCell(generateMiddleTableRight(bean));*/
 		
 		return table;
-		
 	}
+	
+	
 	
 	public static PdfPTable generateMiddleTableLeft(){
 		
@@ -179,6 +181,38 @@ public class TableGenerator {
 		return table;
 	}
 	 
+	public static PdfPTable generateMiddleTableR(GeneratePayslipBean bean) throws DocumentException{
+	
+		float[] colWidths = {1f,0.3f,2f};
+		
+		PdfPTable table = new PdfPTable(3);
+		table.setWidthPercentage(100);
+		table.setWidths(colWidths);
+		
+		PdfPCell cell1 = new PdfPCell(generateMiddleTableRight());
+		cell1.setBorder(Rectangle.NO_BORDER);
+		
+		PdfPCell cell2 = new PdfPCell(createDottTable());
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
+		PdfPCell cell3 = new PdfPCell(generateMiddleTableRight(bean));
+		cell3.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
+		
+		return table;
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static PdfPTable generateMiddleTableRight(){
 		
 		PdfPTable table = new PdfPTable(1);
@@ -315,59 +349,111 @@ public class TableGenerator {
 		return table;
 	}
 	//////////////////Earning and Deduction
-	public static PdfPTable earningDeductionLabel(){
+	public static PdfPTable earningDeductionLabel() throws DocumentException{
 		
-		float[] width = {4,4,4,4};
-		PdfPTable table = new PdfPTable(width);
+		float[] colWidth = {1f,1f};
+		PdfPTable table = new PdfPTable(2);
+		table.setWidths(colWidth);
 		table.setWidthPercentage(95);
 		
+		PdfPCell cell1 = new PdfPCell(earningsHeaderLabel());
+		
+		PdfPCell cell2 = new PdfPCell(deductionHeaderLabel());
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		
+		return table;
+	}
+	
+	
+	
+	public static PdfPTable earningsHeaderLabel() throws DocumentException{
+		
+		float[] width = {1f,1f};
+		PdfPTable table = new PdfPTable(2);
+		table.setWidths(width);
+		table.setWidthPercentage(100);
+		
 		Phrase earnings = new Phrase("Earnings");
-		cell = new PdfPCell(earnings);
-		//cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell1 = new PdfPCell(earnings);
+		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase earnAmnt = new Phrase("Amount (Rs)");
-		cell = new PdfPCell(earnAmnt);
-		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		//cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell2 = new PdfPCell(earnAmnt);
+		cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		
+		return table;
+	}
+	
+	public static PdfPTable deductionHeaderLabel() throws DocumentException{
+		
+		float[] width = {1f,1f};
+		PdfPTable table = new PdfPTable(2);
+		table.setWidths(width);
+		table.setWidthPercentage(100);
 		
 		Phrase deductions = new Phrase("Deductions");
-		cell = new PdfPCell(deductions);
-		//cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell1 = new PdfPCell(deductions);
+		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase deductAmnt = new Phrase("Amount (Rs)");
-		cell = new PdfPCell(deductAmnt);
-		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		//cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell2 = new PdfPCell(deductAmnt);
+		cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
 		
 		
 		return table;
 	}
 	
 	////////////Salary Details
-	public static PdfPTable generateSalaryTable(GeneratePayslipBean bean){
+	public static PdfPTable generateSalaryTable(GeneratePayslipBean bean) throws DocumentException{
 		
-		float[] width = {5,5,5,5};
-		PdfPTable table = new PdfPTable(width);
+		float[] width = {1f,1f};
+		PdfPTable table = new PdfPTable(2);
+		table.setWidths(width);
 		table.setWidthPercentage(95);
 		
-		table.addCell(addEarningComponents(bean));
+		PdfPCell cell1 = new PdfPCell(generateSalaryTableEarn(bean));
+		PdfPCell cell2 = new PdfPCell(generateSalaryTableDeduct(bean));
 		
-		table.addCell(addEarningComponentsAmnt(bean));
-		
-		table.addCell(addDeductionComponents(bean));
-		
-		
-		table.addCell(addDeductComponentsAmnt(bean));
-		
+		table.addCell(cell1);
+		table.addCell(cell2);
 		
 		return table;
 		
 	}
 	
+	public static PdfPTable generateSalaryTableEarn(GeneratePayslipBean bean) throws DocumentException{
+		
+		float[] colWidths = {2f,1f};
+		
+		PdfPTable table = new PdfPTable(2);
+		table.setWidthPercentage(100);
+		table.setWidths(colWidths);
+		
+		PdfPCell cell1 = new PdfPCell(addEarningComponents(bean));
+		cell1.setBorder(Rectangle.NO_BORDER);
+		
+		PdfPCell cell2 = new PdfPCell(addEarningComponentsAmnt(bean));
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		
+		return table;
+	}
+	
+
+
+
 	public static PdfPTable addEarningComponents(GeneratePayslipBean earningbean){
 		
 		PdfPTable table = new PdfPTable(1);
@@ -401,6 +487,28 @@ public class TableGenerator {
 		return table;
 	}
 	
+	public static PdfPTable generateSalaryTableDeduct(GeneratePayslipBean bean) throws DocumentException{
+		
+		float[] colWidths = {2f,1f};
+		
+		PdfPTable table = new PdfPTable(2);
+		table.setWidthPercentage(100);
+		table.setWidths(colWidths);
+		
+		PdfPCell cell1 = new PdfPCell(addDeductionComponents(bean));
+		cell1.setBorder(Rectangle.NO_BORDER);
+		
+		PdfPCell cell2 = new PdfPCell(addDeductComponentsAmnt(bean));
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		
+		return table;
+	}
+	
+	
+	
 	public static PdfPTable addDeductionComponents(GeneratePayslipBean earningbean){
 		
 		PdfPTable table = new PdfPTable(1);
@@ -433,71 +541,91 @@ public class TableGenerator {
 	} 
 	
 	//total amount and total deduction
-	public static PdfPTable totalAmnt(GeneratePayslipBean bean){
+	public static PdfPTable totalAmnt(GeneratePayslipBean bean) throws DocumentException{
 		
-		float[] width = {4,4,4,4};
-		PdfPTable table = new PdfPTable(width);
+		float[] colWidths = {1f,1f};
+		
+		PdfPTable table = new PdfPTable(2);
 		table.setWidthPercentage(95);
-		
-		Phrase earnings = new Phrase(" ");
-		cell = new PdfPCell(earnings);
-		//cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		table.setWidths(colWidths);
 		
 		Phrase earnAmnt = new Phrase(""+bean.getTotalEarningAmnt());
 		cell = new PdfPCell(earnAmnt);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		//cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
-		
-		Phrase deductions = new Phrase(" ");
-		cell = new PdfPCell(deductions);
-		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase deductAmnt = new Phrase(""+bean.getTotalDeductionAmnt());
 		cell = new PdfPCell(deductAmnt);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		//cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
 		
 	}
 	
-	///////////last table(summary)
-	public static PdfPTable lastTable(GeneratePayslipBean bean){
-		float[] width = {5,1,12};
+	//last table(summary)
+	public static PdfPTable lastTable(GeneratePayslipBean bean) throws DocumentException{
+		float[] colWidths = {1f};
 		
-		PdfPTable table = new PdfPTable(width);
+		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(95);
+		table.setWidths(colWidths);
 		
-		table.addCell(summaryCellCompo());
-		table.addCell(summuryDotCell());
-		table.addCell(summaryCellCompo(bean));
+		PdfPCell cell1 = new PdfPCell(lastTableDetails(bean));
+		table.addCell(cell1);
 		
 		return table;
 		
 	}
+	
+	public static PdfPTable lastTableDetails(GeneratePayslipBean bean) throws DocumentException{
+
+		float[] colWidths = {1f,0.1f,3f};
+		
+		PdfPTable table = new PdfPTable(3);
+		
+		table.setWidths(colWidths);
+		
+		PdfPCell cell1 = new PdfPCell(summaryCellCompo());
+		cell1.setBorder(Rectangle.NO_BORDER);
+		
+		PdfPCell cell2 = new PdfPCell(summuryDotCell());
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
+		PdfPCell cell3 = new PdfPCell(summaryCellCompo(bean));
+		cell3.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
+		
+		return table;
+		
+	
+	}
+	
 	
 	public static PdfPTable summaryCellCompo(){
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		
 		Phrase netpay = new Phrase("Net Pay");
-		cell = new PdfPCell(netpay);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell1 = new PdfPCell(netpay);
+		cell1.setBorder(Rectangle.NO_BORDER);
+		
 		
 		Phrase amntinwords = new Phrase("Amount in Words");
-		cell = new PdfPCell(amntinwords);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell2 = new PdfPCell(amntinwords);
+		cell2.setBorder(Rectangle.NO_BORDER);
+		
 		
 		Phrase ModeofPayment = new Phrase("Mode of Payment");
-		cell = new PdfPCell(ModeofPayment);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell3 = new PdfPCell(ModeofPayment);
+		cell3.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
 		
 		return table;
 		
@@ -509,19 +637,20 @@ public class TableGenerator {
 		table.setWidthPercentage(100);
 		
 		Phrase netpaydot = new Phrase(":");
-		cell = new PdfPCell(netpaydot);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell1 = new PdfPCell(netpaydot);
+		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase amntinwordsdot = new Phrase(":");
-		cell = new PdfPCell(amntinwordsdot);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell2 = new PdfPCell(amntinwordsdot);
+		cell2.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase ModeofPaymentdot = new Phrase(":");
-		cell = new PdfPCell(ModeofPaymentdot);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell3 = new PdfPCell(ModeofPaymentdot);
+		cell3.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
 		
 		return table;
 		
@@ -537,19 +666,20 @@ public class TableGenerator {
 		
 		
 		Phrase netpay = new Phrase(""+netpayment);
-		cell = new PdfPCell(netpay);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell1 = new PdfPCell(netpay);
+		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase amntinwords = new Phrase(amountString);
-		cell = new PdfPCell(amntinwords);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell2 = new PdfPCell(amntinwords);
+		cell2.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase ModeofPayment = new Phrase(bean.getTransferMode());
-		cell = new PdfPCell(ModeofPayment);
-		cell.setBorder(Rectangle.NO_BORDER);
-		table.addCell(cell);
+		PdfPCell cell3 = new PdfPCell(ModeofPayment);
+		cell3.setBorder(Rectangle.NO_BORDER);
+		
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
 		
 		return table;
 		
