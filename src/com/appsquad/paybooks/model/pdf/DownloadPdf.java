@@ -15,10 +15,10 @@ public class DownloadPdf {
 		System.out.println("Download method calling..");
 		  String path=pdfNamewithPath.replace('\\','/');
 		  //Messagebox.show(path);
-		  byte[] ba1 = new byte[102400];
+		  byte[] ba1 = new byte[1024];
 		  File myFile = new File(path );
 		  FileInputStream fis = new FileInputStream(myFile);
-		  int baLength;
+		  int baLength = 0;
 		  ByteArrayOutputStream bios = new ByteArrayOutputStream();
 		  try {
 		   try{
@@ -26,9 +26,12 @@ public class DownloadPdf {
 		     bios.write(ba1, 0, baLength);
 		    }
 
-		   } catch (Exception e1) {}  
+		   } catch (Exception e1) {
+			   e1.printStackTrace();
+		   }  
 		   finally {
 		    fis.close();
+		    bios.close();
 		   }
 		   final AMedia amedia = new AMedia(fileName, "pdf", "application/pdf", bios.toByteArray());
 		   Filedownload.save(amedia);

@@ -23,10 +23,11 @@ public class EmployeeMasterDao {
 			PreparedStatement preparedStatement = null;
 			try {
 				connection = DatabaseHandler.createConnection();
+				connection.setAutoCommit(false);
 				preparedStatement = Pbpstm.createQuery(connection, EmployeeMasterSql.employeeinsertsql, Arrays.asList(bean.getEmployeeCode().trim(), bean.getEmployeeName().trim(), 
 																															userName, userName));
 				id = preparedStatement.executeUpdate();
-				
+				connection.commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 				if(e.getMessage().startsWith("ERROR: duplicate key")){
@@ -34,7 +35,7 @@ public class EmployeeMasterDao {
 				}else {
 					Messagebox.show(e.getMessage(), "Error", Messagebox.OK, Messagebox.ERROR);
 				}
-				
+				connection.rollback();
 			}finally{
 				if(preparedStatement != null){
 					preparedStatement.close();

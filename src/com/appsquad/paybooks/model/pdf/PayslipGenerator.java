@@ -40,7 +40,7 @@ public class PayslipGenerator {
 			document.add(TestTableGenerator.digitalStatment());				 // digital signature
 			
 			document.close();
-			//DownloadPdf.download(filePath, headerBean.getEmployeeName());
+			DownloadPdf.download(filePath, headerBean.getEmployeeName());
 		}
 		
 	}
