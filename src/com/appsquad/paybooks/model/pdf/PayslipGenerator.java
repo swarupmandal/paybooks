@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -14,6 +15,10 @@ public class PayslipGenerator {
 	private String filePath;
 	private Document document = null;
 	private PdfWriter writer = null;
+	
+	Font normalFont = new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL);
+	Font earnDeductionLabelboldFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
+	
 	
 	public void getSlipDetails(String path, ArrayList<GeneratePayslipBean> employeePayBeanList,
 			GeneratePayslipBean headerBean) throws Exception, DocumentException{
@@ -28,19 +33,20 @@ public class PayslipGenerator {
 			writer.setBoxSize("art", new Rectangle(40, 58, 900, 850));
 			
 			document.open();
-			document.add(TestTableGenerator.createHeaderTable(headerBean));  // header table
-			document.add(TestTableGenerator.gapTable());                     // gap between header and middle table
-			document.add(TestTableGenerator.generateMiddleTable(bean));		 // middle table (employee details)  bean will be changed
-			document.add(TestTableGenerator.gapTable());                     // gap between middle and salary table
-			document.add(TestTableGenerator.earningDeductionLabel());        // earning and deduction label
-			document.add(TestTableGenerator.generateSalaryTable(bean));		 // salary table bean will be from list
-			document.add(TestTableGenerator.totalAmnt(bean));          		 // total amount earning and deduction
-			document.add(TestTableGenerator.lastTable(bean));			 	 // last table(summary)
-			document.add(TestTableGenerator.gapTable());                     // gap between middle and salary table
-			document.add(TestTableGenerator.digitalStatment());				 // digital signature
+			document.add(TestTableGenerator.createHeaderTable(headerBean));  							// header table
+			document.add(TestTableGenerator.gapTable());                     							// gap between header and middle table
+			document.add(TestTableGenerator.generateMiddleTable(bean));		 							// middle table (employee details)  bean will be changed
+			document.add(TestTableGenerator.gapTable());                     							// gap between middle and salary table
+			document.add(TestTableGenerator.earningDeductionLabel(earnDeductionLabelboldFont));         // earning and deduction label
+			document.add(TestTableGenerator.generateSalaryTable(bean));		 							// salary table bean will be from list
+			document.add(TestTableGenerator.totalAmnt(bean, earnDeductionLabelboldFont));          		 							// total amount earning and deduction
+			document.add(TestTableGenerator.lastTable(bean, earnDeductionLabelboldFont));			 	 							// last table(summary)
+			document.add(TestTableGenerator.gapTable());                     							// gap between middle and salary table
+			document.add(TestTableGenerator.digitalStatment());				 							// digital signature
 			
 			document.close();
-			DownloadPdf.download(filePath, headerBean.getEmployeeName());
+			DownloadPdf.download(filePath, bean.getEmployeeName());
+			
 		}
 		
 	}
