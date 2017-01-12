@@ -15,12 +15,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 public class TestTableGenerator {
 	static PdfPCell cell;
 	
-	public static PdfPTable createHeaderTable(GeneratePayslipBean headerBean){
+	public static PdfPTable createHeaderTable(GeneratePayslipBean headerBean, int tableWidth){
 		
 		float[] widths = {5,15};
 
 		PdfPTable table = new PdfPTable(widths);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 
 		PdfPCell cellL = new PdfPCell();
 		cellL.setBorder(Rectangle.NO_BORDER);
@@ -37,7 +37,7 @@ public class TestTableGenerator {
 	
 	public static PdfPTable createRHSinnerHeaderTable(GeneratePayslipBean headerBean){
 		
-		Font boldFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+		Font boldFont = new Font(Font.FontFamily.HELVETICA, 12.9f, Font.BOLD);
 		
 		PdfPTable table = new PdfPTable(1);
 		
@@ -61,16 +61,18 @@ public class TestTableGenerator {
 	
 	
 	///////////
-	public static PdfPTable generateMiddleTable(GeneratePayslipBean bean) throws DocumentException{
+	public static PdfPTable generateMiddleTable(GeneratePayslipBean bean, int tableWidth, Font normalFont, int cellpadding) throws DocumentException{
 		
 		float[] width = {2f,2f};
 		PdfPTable table = new PdfPTable(2);
 		table.setWidths(width);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		
-		PdfPCell cellL = new PdfPCell(generateMiddleTableL(bean));
+		PdfPCell cellL = new PdfPCell(generateMiddleTableL(bean, normalFont));
+		cellL.setPadding(cellpadding);
 		
-		PdfPCell cellR = new PdfPCell(generateMiddleTableR(bean));
+		PdfPCell cellR = new PdfPCell(generateMiddleTableR(bean, normalFont));
+		cellR.setPadding(cellpadding);
 		
 		table.addCell(cellL);
 		table.addCell(cellR);
@@ -80,7 +82,7 @@ public class TestTableGenerator {
 		
 	}
 	
-	public static PdfPTable generateMiddleTableL(GeneratePayslipBean bean) throws DocumentException{
+	public static PdfPTable generateMiddleTableL(GeneratePayslipBean bean, Font normalFont) throws DocumentException{
 		
 		float[] colWidths = {1.5f,0.3f,2f};
 		
@@ -88,13 +90,13 @@ public class TestTableGenerator {
 		table.setWidthPercentage(100);
 		table.setWidths(colWidths);
 		
-		PdfPCell cell1 = new PdfPCell(generateMiddleTableLeft());
+		PdfPCell cell1 = new PdfPCell(generateMiddleTableLeft(normalFont));
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		PdfPCell cell2 = new PdfPCell(createDottTable());
 		cell2.setBorder(Rectangle.NO_BORDER);
 		
-		PdfPCell cell3 = new PdfPCell(generateMiddleTableLeft(bean));
+		PdfPCell cell3 = new PdfPCell(generateMiddleTableLeft(bean, normalFont));
 		cell3.setBorder(Rectangle.NO_BORDER);
 		
 		table.addCell(cell1);
@@ -106,61 +108,62 @@ public class TestTableGenerator {
 	
 	
 	
-	public static PdfPTable generateMiddleTableLeft(){
+	public static PdfPTable generateMiddleTableLeft(Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(70);
 		
 		
-		Phrase EmployeeName = new Phrase("Employee Name ");
+		Phrase EmployeeName = new Phrase("Employee Name ", normalFont);
 		cell = new PdfPCell(EmployeeName);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase EmployeeID = new Phrase("Employee ID ");
+		Phrase EmployeeID = new Phrase("Employee ID ",normalFont);
 		cell = new PdfPCell(EmployeeID);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase Designation = new Phrase("Designation ");
+		Phrase Designation = new Phrase("Designation ", normalFont);
 		cell = new PdfPCell(Designation);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase Department = new Phrase("Department ");
+		Phrase Department = new Phrase("Department ", normalFont);
 		cell = new PdfPCell(Department);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase doj = new Phrase("Date of Joining ");
+		Phrase doj = new Phrase("Date of Joining ", normalFont);
 		cell = new PdfPCell(doj);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase ESINumber = new Phrase("ESI Number ");
+		Phrase ESINumber = new Phrase("ESI Number ",normalFont);
 		cell = new PdfPCell(ESINumber);
+		cell.setPaddingBottom(4);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
 	}
 	
-	public static PdfPTable generateMiddleTableLeft(GeneratePayslipBean empdetBean){
+	public static PdfPTable generateMiddleTableLeft(GeneratePayslipBean empdetBean, Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		
-		Phrase EmployeeName = new Phrase(empdetBean.getEmployeeName());
+		Phrase EmployeeName = new Phrase(empdetBean.getEmployeeName(), normalFont);
 		cell = new PdfPCell(EmployeeName);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase EmployeeID = new Phrase(empdetBean.getEmployeeCode());
+		Phrase EmployeeID = new Phrase(empdetBean.getEmployeeCode(), normalFont);
 		cell = new PdfPCell(EmployeeID);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase Designation = new Phrase(empdetBean.getDesignation());
+		Phrase Designation = new Phrase(empdetBean.getDesignation(), normalFont);
 		cell = new PdfPCell(Designation);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
@@ -170,20 +173,21 @@ public class TestTableGenerator {
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase doj = new Phrase(empdetBean.getDojStr());
+		Phrase doj = new Phrase(empdetBean.getDojStr(), normalFont);
 		cell = new PdfPCell(doj);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase ESINumber = new Phrase(" ");
 		cell = new PdfPCell(ESINumber);
+		cell.setPaddingBottom(4);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
 	}
 	 
-	public static PdfPTable generateMiddleTableR(GeneratePayslipBean bean) throws DocumentException{
+	public static PdfPTable generateMiddleTableR(GeneratePayslipBean bean, Font normalFont) throws DocumentException{
 	
 		float[] colWidths = {1f,0.3f,2f};
 		
@@ -191,13 +195,13 @@ public class TestTableGenerator {
 		table.setWidthPercentage(100);
 		table.setWidths(colWidths);
 		
-		PdfPCell cell1 = new PdfPCell(generateMiddleTableRight());
+		PdfPCell cell1 = new PdfPCell(generateMiddleTableRight(normalFont));
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		PdfPCell cell2 = new PdfPCell(createDottTable());
 		cell2.setBorder(Rectangle.NO_BORDER);
 		
-		PdfPCell cell3 = new PdfPCell(generateMiddleTableRight(bean));
+		PdfPCell cell3 = new PdfPCell(generateMiddleTableRight(bean,normalFont));
 		cell3.setBorder(Rectangle.NO_BORDER);
 		
 		table.addCell(cell1);
@@ -215,45 +219,46 @@ public class TestTableGenerator {
 	
 	
 	
-	public static PdfPTable generateMiddleTableRight(){
+	public static PdfPTable generateMiddleTableRight(Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(70);
 		
-		Phrase PFNo = new Phrase("PF No ");
+		Phrase PFNo = new Phrase("PF No ", normalFont);
 		cell = new PdfPCell(PFNo);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase uan = new Phrase("UAN ");
+		Phrase uan = new Phrase("UAN ", normalFont);
 		cell = new PdfPCell(uan);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase workLocation = new Phrase("Work Location ");
+		Phrase workLocation = new Phrase("Work Location ", normalFont);
 		cell = new PdfPCell(workLocation);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase lopDays = new Phrase("LOP Days");
+		Phrase lopDays = new Phrase("LOP Days", normalFont);
 		cell = new PdfPCell(lopDays);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase workedDays = new Phrase("Worked Days ");
+		Phrase workedDays = new Phrase("Worked Days ", normalFont);
 		cell = new PdfPCell(workedDays);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase bankacno = new Phrase("Bank A/c No ");
+		Phrase bankacno = new Phrase("Bank A/c No ", normalFont);
 		cell = new PdfPCell(bankacno);
+		cell.setPaddingBottom(4);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		return table;
 	}
 	
-	public static PdfPTable generateMiddleTableRight(GeneratePayslipBean empdetBean){
+	public static PdfPTable generateMiddleTableRight(GeneratePayslipBean empdetBean, Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
@@ -268,23 +273,24 @@ public class TestTableGenerator {
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase workLocation = new Phrase("Kolkata");
+		Phrase workLocation = new Phrase("Kolkata", normalFont);
 		cell = new PdfPCell(workLocation);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase lopDays = new Phrase("0.00");
+		Phrase lopDays = new Phrase("0.00", normalFont);
 		cell = new PdfPCell(lopDays);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase workedDays = new Phrase(""+empdetBean.getPresentDays());
+		Phrase workedDays = new Phrase(""+empdetBean.getPresentDays(), normalFont);
 		cell = new PdfPCell(workedDays);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase bankacno = new Phrase(empdetBean.getAccNo());
+		Phrase bankacno = new Phrase(empdetBean.getAccNo(), normalFont);
 		cell = new PdfPCell(bankacno);
+		cell.setPaddingBottom(4);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
@@ -294,35 +300,41 @@ public class TestTableGenerator {
 	public static PdfPTable createDottTable(){
 		
 		PdfPTable table = new PdfPTable(1);
-		table.setWidthPercentage(20);
+		table.setWidthPercentage(17);
 		
 		Phrase dot1 = new Phrase(":");
 		cell = new PdfPCell(dot1);
+		cell.setPaddingBottom(1);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		 
 		Phrase dot2 = new Phrase(":");
 		cell = new PdfPCell(dot2);
+		cell.setPaddingBottom(1);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot3 = new Phrase(":");
 		cell = new PdfPCell(dot3);
+		cell.setPaddingBottom(1);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot4 = new Phrase(":");
 		cell = new PdfPCell(dot4);
+		cell.setPaddingBottom(1);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot5 = new Phrase(":");
 		cell = new PdfPCell(dot5);
+		cell.setPaddingBottom(1);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
 		Phrase dot6 = new Phrase(":");
 		cell = new PdfPCell(dot6);
+		cell.setPaddingBottom(2.5f);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
@@ -330,9 +342,9 @@ public class TestTableGenerator {
 	}
 	
 	////////////////////
-	public static PdfPTable gapTable(){
+	public static PdfPTable gapTable(int tableWidth){
 		PdfPTable table = new PdfPTable(1);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		Phrase gap = new Phrase(" ");
 		cell = new PdfPCell(gap);
 		cell.setBorder(Rectangle.NO_BORDER);
@@ -351,16 +363,16 @@ public class TestTableGenerator {
 		return table;
 	}
 	//////////////////Earning and Deduction
-	public static PdfPTable earningDeductionLabel(Font boldFont) throws DocumentException{
+	public static PdfPTable earningDeductionLabel(Font boldFont, int tableWidth, int cellpadding) throws DocumentException{
 		
 		float[] colWidth = {1f,1f};
 		PdfPTable table = new PdfPTable(2);
 		table.setWidths(colWidth);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		
-		PdfPCell cell1 = new PdfPCell(earningsHeaderLabel(boldFont));
+		PdfPCell cell1 = new PdfPCell(earningsHeaderLabel(boldFont, cellpadding));
 		
-		PdfPCell cell2 = new PdfPCell(deductionHeaderLabel(boldFont));
+		PdfPCell cell2 = new PdfPCell(deductionHeaderLabel(boldFont, cellpadding));
 		
 		table.addCell(cell1);
 		table.addCell(cell2);
@@ -370,7 +382,7 @@ public class TestTableGenerator {
 	
 	
 	
-	public static PdfPTable earningsHeaderLabel(Font boldFont) throws DocumentException{
+	public static PdfPTable earningsHeaderLabel(Font boldFont, int cellpadding) throws DocumentException{
 		
 		float[] width = {1f,1f};
 		PdfPTable table = new PdfPTable(2);
@@ -379,10 +391,12 @@ public class TestTableGenerator {
 		
 		Phrase earnings = new Phrase("Earnings", boldFont);
 		PdfPCell cell1 = new PdfPCell(earnings);
+		cell1.setPadding(cellpadding);
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
 		Phrase earnAmnt = new Phrase("Amount (Rs)", boldFont);
 		PdfPCell cell2 = new PdfPCell(earnAmnt);
+		cell2.setPadding(cellpadding);
 		cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		cell2.setBorder(Rectangle.NO_BORDER);
 		
@@ -392,19 +406,21 @@ public class TestTableGenerator {
 		return table;
 	}
 	
-	public static PdfPTable deductionHeaderLabel(Font boldFont) throws DocumentException{
+	public static PdfPTable deductionHeaderLabel(Font boldFont, int cellpadding) throws DocumentException{
 		
 		float[] width = {1f,1f};
 		PdfPTable table = new PdfPTable(2);
 		table.setWidths(width);
 		table.setWidthPercentage(100);
 		
-		Phrase deductions = new Phrase("Deductions");
+		Phrase deductions = new Phrase("Deductions", boldFont);
 		PdfPCell cell1 = new PdfPCell(deductions);
+		cell1.setPadding(cellpadding);
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
-		Phrase deductAmnt = new Phrase("Amount (Rs)");
+		Phrase deductAmnt = new Phrase("Amount (Rs)", boldFont);
 		PdfPCell cell2 = new PdfPCell(deductAmnt);
+		cell2.setPadding(cellpadding);
 		cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		cell2.setBorder(Rectangle.NO_BORDER);
 		
@@ -416,15 +432,18 @@ public class TestTableGenerator {
 	}
 	
 	////////////Salary Details
-	public static PdfPTable generateSalaryTable(GeneratePayslipBean bean) throws DocumentException{
+	public static PdfPTable generateSalaryTable(GeneratePayslipBean bean, int tableWidth, Font normalFont, int cellpadding) throws DocumentException{
 		
 		float[] width = {1f,1f};
 		PdfPTable table = new PdfPTable(2);
 		table.setWidths(width);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		
-		PdfPCell cell1 = new PdfPCell(generateSalaryTableEarn(bean));
-		PdfPCell cell2 = new PdfPCell(generateSalaryTableDeduct(bean));
+		PdfPCell cell1 = new PdfPCell(generateSalaryTableEarn(bean,normalFont));
+		cell1.setPadding(cellpadding);
+		
+		PdfPCell cell2 = new PdfPCell(generateSalaryTableDeduct(bean, normalFont));
+		cell2.setPadding(cellpadding);
 		
 		table.addCell(cell1);
 		table.addCell(cell2);
@@ -433,7 +452,7 @@ public class TestTableGenerator {
 		
 	}
 	
-	public static PdfPTable generateSalaryTableEarn(GeneratePayslipBean bean) throws DocumentException{
+	public static PdfPTable generateSalaryTableEarn(GeneratePayslipBean bean, Font normalFont) throws DocumentException{
 		
 		float[] colWidths = {2f,1f};
 		
@@ -441,10 +460,10 @@ public class TestTableGenerator {
 		table.setWidthPercentage(100);
 		table.setWidths(colWidths);
 		
-		PdfPCell cell1 = new PdfPCell(addEarningComponents(bean));
+		PdfPCell cell1 = new PdfPCell(addEarningComponents(bean, normalFont));
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
-		PdfPCell cell2 = new PdfPCell(addEarningComponentsAmnt(bean));
+		PdfPCell cell2 = new PdfPCell(addEarningComponentsAmnt(bean, normalFont));
 		cell2.setBorder(Rectangle.NO_BORDER);
 		
 		table.addCell(cell1);
@@ -456,7 +475,7 @@ public class TestTableGenerator {
 
 
 
-	public static PdfPTable addEarningComponents(GeneratePayslipBean earningbean){
+	public static PdfPTable addEarningComponents(GeneratePayslipBean earningbean, Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
@@ -464,7 +483,7 @@ public class TestTableGenerator {
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
 			if(bean.geteOrdId() == 1){
 				
-			Phrase deductAmnt = new Phrase(bean.getComponent());
+			Phrase deductAmnt = new Phrase(bean.getComponent(), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
@@ -473,13 +492,13 @@ public class TestTableGenerator {
 		return table;
 	}
 	
-	public static PdfPTable addEarningComponentsAmnt(GeneratePayslipBean earningbean){
+	public static PdfPTable addEarningComponentsAmnt(GeneratePayslipBean earningbean, Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
 			if(bean.geteOrdId() == 1){
-			Phrase deductAmnt = new Phrase(""+bean.getAmount());
+			Phrase deductAmnt = new Phrase(""+bean.getAmount(), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setBorder(Rectangle.NO_BORDER);
@@ -489,7 +508,7 @@ public class TestTableGenerator {
 		return table;
 	}
 	
-	public static PdfPTable generateSalaryTableDeduct(GeneratePayslipBean bean) throws DocumentException{
+	public static PdfPTable generateSalaryTableDeduct(GeneratePayslipBean bean, Font normlaFont) throws DocumentException{
 		
 		float[] colWidths = {2f,1f};
 		
@@ -497,10 +516,10 @@ public class TestTableGenerator {
 		table.setWidthPercentage(100);
 		table.setWidths(colWidths);
 		
-		PdfPCell cell1 = new PdfPCell(addDeductionComponents(bean));
+		PdfPCell cell1 = new PdfPCell(addDeductionComponents(bean, normlaFont));
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
-		PdfPCell cell2 = new PdfPCell(addDeductComponentsAmnt(bean));
+		PdfPCell cell2 = new PdfPCell(addDeductComponentsAmnt(bean, normlaFont));
 		cell2.setBorder(Rectangle.NO_BORDER);
 		
 		table.addCell(cell1);
@@ -511,13 +530,13 @@ public class TestTableGenerator {
 	
 	
 	
-	public static PdfPTable addDeductionComponents(GeneratePayslipBean earningbean){
+	public static PdfPTable addDeductionComponents(GeneratePayslipBean earningbean, Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
 			if(bean.geteOrdId() == 2){
-			Phrase deductAmnt = new Phrase(bean.getComponent());
+			Phrase deductAmnt = new Phrase(bean.getComponent(), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
@@ -526,13 +545,13 @@ public class TestTableGenerator {
 		return table;
 	}
 	
-	public static PdfPTable addDeductComponentsAmnt(GeneratePayslipBean earningbean){
+	public static PdfPTable addDeductComponentsAmnt(GeneratePayslipBean earningbean, Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
 			if(bean.geteOrdId() == 2){
-			Phrase deductAmnt = new Phrase(""+bean.getAmount());
+			Phrase deductAmnt = new Phrase(""+bean.getAmount(), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setBorder(Rectangle.NO_BORDER);
@@ -543,21 +562,23 @@ public class TestTableGenerator {
 	} 
 	
 	//total amount and total deduction
-	public static PdfPTable totalAmnt(GeneratePayslipBean bean, Font boldFont) throws DocumentException{
+	public static PdfPTable totalAmnt(GeneratePayslipBean bean, Font boldFont, int tableWidth, int cellpadding) throws DocumentException{
 		
 		float[] colWidths = {1f,1f};
 		
 		PdfPTable table = new PdfPTable(2);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		table.setWidths(colWidths);
 		
 		Phrase earnAmnt = new Phrase(""+bean.getTotalEarningAmnt(), boldFont);
 		cell = new PdfPCell(earnAmnt);
+		cell.setPadding(cellpadding);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table.addCell(cell);
 		
 		Phrase deductAmnt = new Phrase(""+bean.getTotalDeductionAmnt(), boldFont);
 		cell = new PdfPCell(deductAmnt);
+		cell.setPadding(cellpadding);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table.addCell(cell);
 		
@@ -566,14 +587,16 @@ public class TestTableGenerator {
 	}
 	
 	//last table(summary)
-	public static PdfPTable lastTable(GeneratePayslipBean bean, Font boldFont) throws DocumentException{
+	public static PdfPTable lastTable(GeneratePayslipBean bean, Font boldFont, int tableWidth, int cellpadding) throws DocumentException{
 		float[] colWidths = {1f};
 		
 		PdfPTable table = new PdfPTable(1);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		table.setWidths(colWidths);
 		
 		PdfPCell cell1 = new PdfPCell(lastTableDetails(bean, boldFont));
+		cell1.setPaddingLeft(3);
+		cell1.setPaddingBottom(3);
 		table.addCell(cell1);
 		
 		return table;
@@ -593,6 +616,7 @@ public class TestTableGenerator {
 		
 		PdfPCell cell2 = new PdfPCell(summuryDotCell());
 		cell2.setBorder(Rectangle.NO_BORDER);
+		cell2.setPadding(1);
 		
 		PdfPCell cell3 = new PdfPCell(summaryCellCompo(bean));
 		cell3.setBorder(Rectangle.NO_BORDER);
@@ -689,9 +713,9 @@ public class TestTableGenerator {
 	
 	//last table
 	
-	public static PdfPTable digitalStatment(){
+	public static PdfPTable digitalStatment(int tableWidth){
 		PdfPTable table = new PdfPTable(1);
-		table.setWidthPercentage(95);
+		table.setWidthPercentage(tableWidth);
 		
 		Phrase phrase = new Phrase("\"This payslip is computer generated, hence no signature is required\" ");
 		cell = new PdfPCell(phrase);

@@ -1,6 +1,5 @@
 package com.appsquad.paybooks.model.pdf;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 
@@ -61,7 +60,7 @@ public class TestPdf {
 		table.setWidths(columnWidths);
 		
 		PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 1"));
-		cell1.setBorderColor(BaseColor.BLUE);
+		cell1.setBorderColor(BaseColor.PINK);
 		cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		
