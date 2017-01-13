@@ -26,5 +26,16 @@ public class ComponentAllocationService {
 		list.clear();
 	}
 	
+	public static ArrayList<ComponentMasterBean> loadAllocatedcomponentPerEmp(int empId){
+		ArrayList<ComponentMasterBean> list = ComponentAllocationDao.loadAllocatedComponent(empId) ;
+		return list;
+		
+	}
+	
+	public static boolean updatecomponentwithemp(String userName ,ArrayList<ComponentMasterBean> list){
+		boolean flag = false;
+		flag = ComponentAllocationDao.updateComonentwithEmployee(userName, list);
+		return flag;
+	}
 	
 }

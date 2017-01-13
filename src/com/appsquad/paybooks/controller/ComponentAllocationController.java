@@ -29,7 +29,11 @@ public class ComponentAllocationController {
 	private ComponentMasterBean componentMasterBean = new ComponentMasterBean();
 	private ComponentAllocationBean componentAllocationBean = new ComponentAllocationBean();
 	private LoadAllListService allListService;
+	private EmployeeMasterBean existingemployeeMasterBean = new EmployeeMasterBean();
+	private ComponentAllocationBean exAllocatedcomponentAllocationBean = new ComponentAllocationBean();
 	
+	
+	private ArrayList<ComponentMasterBean> exAllocatedcomponentList;
 	private ArrayList<EmployeeMasterBean> employeeList;
 	private ArrayList<ComponentMasterBean> componentList;
 	
@@ -39,6 +43,10 @@ public class ComponentAllocationController {
 	
 	@Wire("#empnm")
 	 private Bandbox empBandBox;
+	
+	
+	@Wire("#exempnm")
+	private Bandbox exEmpBandBox;
 	
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view)
@@ -120,6 +128,77 @@ public class ComponentAllocationController {
 		ComponentAllocationService.onClear(employeeMasterBean, componentList);
 		allListService = new LoadAllListService();
 		employeeList = allListService.loadEmployeeInfo();
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onClickClearEx(){
+		if(employeeList != null){
+			existingemployeeMasterBean.setEmployeeName(null);
+			existingemployeeMasterBean.setEmployeeId(null);
+			employeeList = allListService.loadEmployeeInfo();
+			if(exAllocatedcomponentList != null){
+			exAllocatedcomponentList.clear();
+			}
+		}
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onChangeExEmployeeName(){
+
+		allListService = new LoadAllListService();
+		employeeList = allListService.loadActvEmployeeInfoSearch(existingemployeeMasterBean.getEmployeeSearch());
+
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onClearExEmployeeName(){
+		existingemployeeMasterBean.setEmployeeSearch(null);
+		employeeList = allListService.loadEmployeeInfo();
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onSelctExEmployeeName(){
+
+		exEmpBandBox.close();
+		if(existingemployeeMasterBean.getEmployeeId() != null){
+			exAllocatedcomponentList = ComponentAllocationService.loadAllocatedcomponentPerEmp(existingemployeeMasterBean.getEmployeeId());
+			if(exAllocatedcomponentList.size() == 0){
+				Messagebox.show("Not Found any Component", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);
+			}
+		}
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onClickExAllocationUpdate(){
+
+		boolean flag = false;
+		ArrayList<ComponentMasterBean> list = new ArrayList<ComponentMasterBean>();
+		
+		if(exAllocatedcomponentList !=null){
+		for(ComponentMasterBean bean : exAllocatedcomponentList){
+			if(bean.isChecked()){
+				list.add(bean);
+			}
+		}
+		if(list.size()>0){
+			flag = ComponentAllocationService.updatecomponentwithemp(userId, list);
+			if(flag){
+				Messagebox.show("Updated Successfully", "Information", Messagebox.OK, Messagebox.INFORMATION);
+				exAllocatedcomponentList = ComponentAllocationService.loadAllocatedcomponentPerEmp(existingemployeeMasterBean.getEmployeeId());
+			}
+		}else {
+			Messagebox.show("Not Selected any row", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);
+		}
+		}else {
+			Messagebox.show("No List Found", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);
+		}
+		
+	
 	}
 	
 	public EmployeeMasterBean getEmployeeMasterBean() {
@@ -205,6 +284,59 @@ public class ComponentAllocationController {
 
 	public void setAllListService(LoadAllListService allListService) {
 		this.allListService = allListService;
+	}
+
+
+	public EmployeeMasterBean getExistingemployeeMasterBean() {
+		return existingemployeeMasterBean;
+	}
+
+
+	public void setExistingemployeeMasterBean(
+			EmployeeMasterBean existingemployeeMasterBean) {
+		this.existingemployeeMasterBean = existingemployeeMasterBean;
+	}
+
+
+	public Bandbox getEmpBandBox() {
+		return empBandBox;
+	}
+
+
+	public void setEmpBandBox(Bandbox empBandBox) {
+		this.empBandBox = empBandBox;
+	}
+
+
+	public ComponentAllocationBean getExAllocatedcomponentAllocationBean() {
+		return exAllocatedcomponentAllocationBean;
+	}
+
+
+	public void setExAllocatedcomponentAllocationBean(
+			ComponentAllocationBean exAllocatedcomponentAllocationBean) {
+		this.exAllocatedcomponentAllocationBean = exAllocatedcomponentAllocationBean;
+	}
+
+
+	public ArrayList<ComponentMasterBean> getExAllocatedcomponentList() {
+		return exAllocatedcomponentList;
+	}
+
+
+	public void setExAllocatedcomponentList(
+			ArrayList<ComponentMasterBean> exAllocatedcomponentList) {
+		this.exAllocatedcomponentList = exAllocatedcomponentList;
+	}
+
+
+	public Bandbox getExEmpBandBox() {
+		return exEmpBandBox;
+	}
+
+
+	public void setExEmpBandBox(Bandbox exEmpBandBox) {
+		this.exEmpBandBox = exEmpBandBox;
 	}
 	
 	

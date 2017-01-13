@@ -9,6 +9,7 @@ public class ComponentMasterBean {
 	private boolean checked;
 	private Double amount;
 	private Integer eOrdId;
+	private int compoAllocationId;
 	
 	
 	public Integer getComponentId() {
@@ -52,6 +53,12 @@ public class ComponentMasterBean {
 	}
 	public void seteOrdId(Integer eOrdId) {
 		this.eOrdId = eOrdId;
+	}
+	public int getCompoAllocationId() {
+		return compoAllocationId;
+	}
+	public void setCompoAllocationId(int compoAllocationId) {
+		this.compoAllocationId = compoAllocationId;
 	}
 	
 	
