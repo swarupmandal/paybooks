@@ -26,13 +26,16 @@ public class GeneratePayslipController {
 
 	
 	private MonthMasterBean monthMasterBean = new MonthMasterBean();
+	private MonthMasterBean yearMasterBean = new MonthMasterBean();
 	private LoadAllListDao allListDao;
 	private GeneratePayslipBean generatePayslipBean = new GeneratePayslipBean();
-	private GeneratePayslipBean payslipHeaderBean = new GeneratePayslipBean();
+	private GeneratePayslipBean payslipHeaderBean;// = new GeneratePayslipBean();
 	
 	
 	private ArrayList<GeneratePayslipBean> generatePayslipBeanList;
 	private ArrayList<MonthMasterBean> monthist;
+	private ArrayList<MonthMasterBean> yearist;
+	
 	
 	private Session session = null;
 
@@ -49,6 +52,9 @@ public class GeneratePayslipController {
 		userId = (String) session.getAttribute("userId");
 		allListDao = new LoadAllListDao();
 		monthist = allListDao.loadmonths();
+		
+		allListDao = new LoadAllListDao();
+		yearist = allListDao.loadyears();
 		
 		generatePayslipBeanList = GeneratePayslipService.loadempSalDetails();
 	}
@@ -78,7 +84,7 @@ public class GeneratePayslipController {
 			payslipHeaderBean.setCompanyAddress("Martin Burn Ispace, Second Floor, Unit 2C1 Kolkata - 700156");
 			payslipHeaderBean.setMonth(monthMasterBean.getMonth());
 			payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
-			payslipHeaderBean.setYear("2016");
+			payslipHeaderBean.setYear(yearMasterBean.getYr());
 			
 			String path = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
 			PayslipGenerator payslipGenerator = new PayslipGenerator();
@@ -94,6 +100,33 @@ public class GeneratePayslipController {
 		}
 	}
 	
+	@Command
+	@NotifyChange("*")
+	public void downloadAndSend(@BindingParam("bean") GeneratePayslipBean bean ){
+		
+		payslipHeaderBean = new GeneratePayslipBean();
+		if(bean.isCheck() && bean.getPresentDays() != null){
+				
+				payslipHeaderBean.setCompanyName("Appsquad Pvt. Ltd");
+				payslipHeaderBean.setCompanyAddress("Martin Burn Ispace, Second Floor, Unit 2C1 Kolkata - 700156");
+				payslipHeaderBean.setMonth(monthMasterBean.getMonth());
+				payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
+				payslipHeaderBean.setYear(yearMasterBean.getYr());
+				
+				String path = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
+				PayslipGenerator payslipGenerator = new PayslipGenerator();
+				try {
+					payslipGenerator.getSlipDetailsPerEmp(path, bean, payslipHeaderBean);
+				
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}	
+			
+		}else {
+			Messagebox.show("Please check this row and enter Present day","Alert Information",Messagebox.OK,Messagebox.EXCLAMATION);
+		}
+	}
 	
 	/*Calendar now = Calendar.getInstance();
 	int year = now.get(Calendar.YEAR);
@@ -183,6 +216,26 @@ public class GeneratePayslipController {
 
 	public void setPayslipHeaderBean(GeneratePayslipBean payslipHeaderBean) {
 		this.payslipHeaderBean = payslipHeaderBean;
+	}
+
+
+	public MonthMasterBean getYearMasterBean() {
+		return yearMasterBean;
+	}
+
+
+	public void setYearMasterBean(MonthMasterBean yearMasterBean) {
+		this.yearMasterBean = yearMasterBean;
+	}
+
+
+	public ArrayList<MonthMasterBean> getYearist() {
+		return yearist;
+	}
+
+
+	public void setYearist(ArrayList<MonthMasterBean> yearist) {
+		this.yearist = yearist;
 	}
 	
 }

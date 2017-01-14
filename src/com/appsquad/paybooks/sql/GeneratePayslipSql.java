@@ -13,6 +13,6 @@ public class GeneratePayslipSql {
 															   " amount, " +
 															   " e_or_d_id, " +
 															   " component_name " + 
-															   " from vw_employee_salary_components_details where employee_info_id = ? ";
+															   " from vw_employee_salary_components_details where employee_info_id = ? and is_delete = 'N' ";
 	
 }

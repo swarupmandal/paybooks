@@ -216,10 +216,6 @@ public class TestTableGenerator {
 	
 	
 	
-	
-	
-	
-	
 	public static PdfPTable generateMiddleTableRight(Font normalFont){
 		
 		PdfPTable table = new PdfPTable(1);
@@ -372,8 +368,11 @@ public class TestTableGenerator {
 		table.setWidthPercentage(tableWidth);
 		
 		PdfPCell cell1 = new PdfPCell(earningsHeaderLabel(boldFont, cellpadding));
+		cell1.setPadding(cellpadding);
+		
 		
 		PdfPCell cell2 = new PdfPCell(deductionHeaderLabel(boldFont, cellpadding));
+		cell2.setPadding(cellpadding);
 		
 		table.addCell(cell1);
 		table.addCell(cell2);

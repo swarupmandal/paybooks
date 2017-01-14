@@ -151,4 +151,44 @@ public class LoadAllListDao {
 	
 	}
 	
+public ArrayList<MonthMasterBean> loadyears(){
+		
+		ArrayList<MonthMasterBean> list =new ArrayList<MonthMasterBean>();
+		if(list.size()>0){
+			list.clear();
+		}
+		try {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			try {
+				connection = DatabaseHandler.createConnection();
+				preparedStatement = Pbpstm.createQuery(connection, LoadAllListSql.loadYears, null);
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					MonthMasterBean bean = new MonthMasterBean();
+					bean.setYearId(resultSet.getInt("year_master_id"));
+					bean.setYr(resultSet.getString("yr"));
+					
+					list.add(bean);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Messagebox.show(e.getMessage(), "Error", Messagebox.OK, Messagebox.ERROR);
+				
+			}finally{
+				if(preparedStatement != null){
+					preparedStatement.close();
+				}
+				if(connection != null){
+					connection.close();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	
+	}
+	
 }
