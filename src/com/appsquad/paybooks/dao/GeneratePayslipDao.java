@@ -3,6 +3,10 @@ package com.appsquad.paybooks.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,6 +16,7 @@ import com.appsquad.paybooks.bean.ComponentMasterBean;
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.appsquad.paybooks.database.DatabaseHandler;
 import com.appsquad.paybooks.database.Pbpstm;
+import com.appsquad.paybooks.model.utils.Dateformatter;
 import com.appsquad.paybooks.sql.GeneratePayslipSql;
 
 public class GeneratePayslipDao {
@@ -39,8 +44,10 @@ public class GeneratePayslipDao {
 					bean.setEmployeeName(resultSet.getString("employee_name"));
 					bean.setDesignation(resultSet.getString("designation"));
 					bean.setEmailId(resultSet.getString("email_id"));
-					//bean.setDojStr(resultSet.getString("date_of_joining"));
-					bean.setDojStr("31/8/15");
+					bean.setDojStr(resultSet.getString("date_of_joining"));
+					if(bean.getDojStr() != null){
+						bean.setDojStr(Dateformatter.toStringDate(bean.getDojStr()));
+					}
 					bean.setAccNo(resultSet.getString("account_no"));
 					bean.setComponentList(GeneratePayslipDao.loadComponents(connection, bean.getEmployeeId(), bean));
 					
@@ -74,6 +81,7 @@ public class GeneratePayslipDao {
 		}
 		double totalEarnings = 0.0;
 		double totaldeductions = 0.0;
+		NumberFormat nf = new DecimalFormat("#0.00");
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = Pbpstm.createQuery(connection, GeneratePayslipSql.loadEmployeeSalaryComponents, Arrays.asList(empId));

@@ -3,6 +3,7 @@ package com.appsquad.paybooks.model.pdf;
 
 import com.appsquad.paybooks.bean.ComponentMasterBean;
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
+import com.appsquad.paybooks.model.research.DesimalFormat;
 import com.appsquad.paybooks.model.utils.NumberToWord;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -498,7 +499,7 @@ public class TestTableGenerator {
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
 			if(bean.geteOrdId() == 1){
-			Phrase deductAmnt = new Phrase(""+bean.getAmount(), normalFont);
+			Phrase deductAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(bean.getAmount()), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setBorder(Rectangle.NO_BORDER);
@@ -551,7 +552,7 @@ public class TestTableGenerator {
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
 			if(bean.geteOrdId() == 2){
-			Phrase deductAmnt = new Phrase(""+bean.getAmount(), normalFont);
+			Phrase deductAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(bean.getAmount()), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setBorder(Rectangle.NO_BORDER);
@@ -570,13 +571,13 @@ public class TestTableGenerator {
 		table.setWidthPercentage(tableWidth);
 		table.setWidths(colWidths);
 		
-		Phrase earnAmnt = new Phrase(""+bean.getTotalEarningAmnt(), boldFont);
+		Phrase earnAmnt = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getTotalEarningAmnt()), boldFont);
 		cell = new PdfPCell(earnAmnt);
 		cell.setPadding(cellpadding);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table.addCell(cell);
 		
-		Phrase deductAmnt = new Phrase(""+bean.getTotalDeductionAmnt(), boldFont);
+		Phrase deductAmnt = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getTotalDeductionAmnt()), boldFont);
 		cell = new PdfPCell(deductAmnt);
 		cell.setPadding(cellpadding);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -691,7 +692,7 @@ public class TestTableGenerator {
 		String amountString = NumberToWord.numToStr(netpayment);
 		
 		
-		Phrase netpay = new Phrase(""+netpayment);
+		Phrase netpay = new Phrase(""+DesimalFormat.twoDecimalFormat(netpayment));
 		PdfPCell cell1 = new PdfPCell(netpay);
 		cell1.setBorder(Rectangle.NO_BORDER);
 		
