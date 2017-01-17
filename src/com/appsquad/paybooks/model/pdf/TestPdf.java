@@ -153,7 +153,7 @@ public class TestPdf {
 		table.setWidths(colWidths);
 		
 		PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 3"));
-		cell1.setBorderColor(BaseColor.BLACK);
+		cell1.setBorderColor(BaseColor.BLACK.brighter());
 		
 		PdfPCell cell2 = new PdfPCell(new Paragraph("Cell 4"));
 		cell2.setBorderColor(BaseColor.CYAN);
